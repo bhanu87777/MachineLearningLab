@@ -29,17 +29,17 @@ X_test = scaler.transform(X_test)
 knn_iris = KNeighborsClassifier(n_neighbors=3)
 knn_iris.fit(X_train, y_train)
 
-# Predict
+# Predict test set
 y_pred = knn_iris.predict(X_test)
 
 # Evaluate
 print("Iris Dataset - Accuracy:", accuracy_score(y_test, y_pred))
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
-print("Classification Report:\n", classification_report(y_test, y_pred))
 
-# Plot heatmap
-sns.heatmap(confusion_matrix(y_test, y_pred), annot=True, cmap="Blues", fmt='g')
-plt.title("Confusion Matrix - Iris KNN")
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.show()
+# Predict for new data entry
+# Predict for new data entry with feature names
+new_data = pd.DataFrame([[5.1, 3.5, 1.4, 0.2]], columns=X_iris.columns)
+new_data_scaled = scaler.transform(new_data)
+predicted_class = knn_iris.predict(new_data_scaled)
+
+print(f"\nThe new data entry {new_data.values.tolist()} is classified as: {predicted_class[0]}")
