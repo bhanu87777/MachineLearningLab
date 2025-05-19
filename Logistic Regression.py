@@ -7,10 +7,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 # Load Titanic dataset
 df = pd.read_csv('Titanic.csv')
 
-# Select features & target
-# Common useful features: Pclass, Sex, Age, SibSp, Parch, Fare, Embarked
-# Target: Survived
-
 # Handle missing data
 df['Age'] = df['Age'].fillna(df['Age'].median())
 df['Embarked'] = df['Embarked'].fillna(df['Embarked'].mode()[0])
@@ -33,7 +29,22 @@ model.fit(X_train, y_train)
 # Predict on test data
 y_pred = model.predict(X_test)
 
+# Convert numeric output to binary labels
+y_pred_labels = np.where(y_pred == 1, 'Yes', 'No')
+
+# Optional: also convert actual y_test for easier comparison
+y_test_labels = np.where(y_test == 1, 'Yes', 'No')
+
 # Evaluation
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
-print("\nClassification Report:\n", classification_report(y_test, y_pred))
+print("Accuracy:", accuracy_score(y_test_labels, y_pred_labels))
+print("\nConfusion Matrix:\n", confusion_matrix(y_test_labels, y_pred_labels))
+# Generate classification report as a dictionary
+report = classification_report(y_test_labels, y_pred_labels, output_dict=True)
+
+# Extract precision values
+precision_no = report['No']['precision']
+precision_yes = report['Yes']['precision']
+
+# Print only the precision
+print(f"Precision for 'No': {precision_no:.2f}")
+print(f"Precision for 'Yes': {precision_yes:.2f}")
