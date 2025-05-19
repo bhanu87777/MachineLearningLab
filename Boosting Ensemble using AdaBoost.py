@@ -31,14 +31,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Define base estimator
 base_est = DecisionTreeClassifier(max_depth=3)
 
-# AdaBoost with 10 estimators using SAMME algorithm
-model_10 = AdaBoostClassifier(estimator=base_est, n_estimators=10, random_state=42, algorithm='SAMME')
-model_10.fit(X_train, y_train)
-y_pred_10 = model_10.predict(X_test)
-score_10 = accuracy_score(y_test, y_pred_10)
-print(f"Accuracy with 10 estimators: {score_10:.4f}")
-print("Classification Report (10 Estimators):\n", classification_report(y_test, y_pred_10))
-
 # Initialize variables for fine-tuning
 estimators_range = list(range(10, 201, 10))
 scores = []
